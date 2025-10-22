@@ -1,0 +1,28 @@
+@use '@angular/material' as mat;
+
+// 🎨 Cores personalizadas
+$primary-blue: #1e3a8a;
+$secondary-blue: #2c65ce;
+$tertiary-blue: #3d87ff;
+$light-blue: #e0f2fe;
+$white: #ffffff;
+$gray: #f3f4f6;
+
+// ✅ Tema Material 3 com paletas existentes
+$my-theme: mat.define-theme((
+  color: (
+    primary: mat.$azure-palette,
+    tertiary: mat.$blue-palette,
+    use-system-variables: false,
+  )
+));
+
+@include mat.all-component-themes($my-theme);
+
+// 🔧 Reset global styles
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: $light-blue;
+  color: $primary-blue;
+}

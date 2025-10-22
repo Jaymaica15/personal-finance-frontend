@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+.transaction-dialog-container {
+  width: 500px;
+  height: auto;
+  flex-direction: column;
+  background-color: white;
+
+  h2 {
+    color: #1e3a8a;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+
+  mat-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+}

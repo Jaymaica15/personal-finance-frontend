@@ -1,0 +1,39 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <h3>Meu Painel</h3>
+    <nav>
+      <ul>
+        <li><a routerLink="/dashboard">🏠 Início</a></li>
+        <li><a routerLink="/perfil">👤 Perfil</a></li>
+        <li><a routerLink="/configuracoes">⚙️ Configurações</a></li>
+        <li><a routerLink="/sair">🚪 Sair</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content">
+    <header>
+      <h2>Bem-vinda, Júlia!</h2>
+      <p>Que bom te ver por aqui 💙</p>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <h4>📊 Relatórios</h4>
+        <p>Veja os dados atualizados</p>
+      </div>
+      <div class="card" (click)="goToTransactions()" method="post">
+        <h4>📈 Transações</h4>
+        <p>Acesse suas transações</p>
+      </div>
+      <div class="card">
+        <h4>📅 Agenda</h4>
+        <p>Confira seus compromissos</p>
+      </div>
+      <div class="card">
+        <h4>📁 Documentos</h4>
+        <p>Acesse seus arquivos</p>
+      </div>
+    </section>
+  </main>
+</div>

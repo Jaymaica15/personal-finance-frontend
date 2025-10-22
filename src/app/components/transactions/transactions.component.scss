@@ -1,0 +1,114 @@
+@use '@angular/material' as mat;
+
+// 🎨 Cores personalizadas
+$primary-blue: #1e3a8a;
+$secondary-blue: #2c65ce;
+$tertiary-blue: #3d87ff;
+$light-blue: #e0f2fe;
+$white: #ffffff;
+$gray: #f3f4f6;
+
+// 🧾 Estilos
+.transactions-container {
+  background-color: $gray;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  max-width: 960px;
+  margin: 2rem auto;
+  animation: fadeInUp 0.6s ease-out;
+
+  h2 {
+    color: $primary-blue;
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    text-align: center;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  button[mat-raised-button] {
+    background-color: $primary-blue;
+    color: $white;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: $secondary-blue;
+      transform: scale(1.03);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  table {
+    width: 100%;
+    margin-top: 1.5rem;
+    background-color: $white;
+    border-radius: 8px;
+    overflow-x: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    animation: fadeInUp 1s ease-out;
+
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      white-space: nowrap;
+      transition: background-color 0.3s ease;
+    }
+
+    th {
+      background-color: $light-blue;
+      color: $primary-blue;
+      font-weight: 600;
+    }
+
+    td {
+      color: $primary-blue;
+      border-top: 1px solid $gray;
+    }
+
+    .income {
+      color: #2e7d32;
+      font-weight: bold;
+    }
+
+    .expense {
+      color: #c62828;
+      font-weight: bold;
+    }
+  }
+
+  // 📱 Responsividade
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    button[mat-raised-button] {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
+    table {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+}
+// ✨ Animação de fadeInUp
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

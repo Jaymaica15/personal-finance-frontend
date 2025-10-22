@@ -1,0 +1,127 @@
+@use "sass:color";
+// ======= Paleta =======
+$primary-blue: #1e3a8a;
+$secondary-blue: #2c65ce;
+$tertiary-blue: #3d87ff;
+$light-blue: #e0f2fe;
+$white: #ffffff;
+$gray: #f3f4f6;
+
+// ======= Layout geral =======
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: linear-gradient(135deg, $primary-blue, $tertiary-blue);
+}
+
+.login-card {
+  background: $white;
+  padding: 2.5rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+
+  h2 {
+    margin-bottom: 0.5rem;
+    color: $primary-blue;
+  }
+
+  p {
+    margin-bottom: 2rem;
+    color: color.adjust($gray, $lightness: -40%);
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .footer {
+    margin-top: 1.5rem;
+
+    a {
+      color: $secondary-blue;
+      text-decoration: none;
+      font-size: 0.9rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// ======= Floating label =======
+.form-group {
+  position: relative;
+  width: 100%;
+
+  input {
+    width: 95%;
+    padding: 1rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid color.adjust($primary-blue, $lightness: 40%);
+    border-radius: 0.5rem;
+    outline: none;
+    background: transparent;
+    transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+
+    &:focus {
+      border-color: $secondary-blue;
+      box-shadow: 0 0 0 3px rgba($secondary-blue, 0.2);
+      background-color: $light-blue;
+    }
+  }
+
+  label {
+    position: absolute;
+    top: 1rem;
+    left: 0.75rem;
+    color: color.adjust($gray, $lightness: -30%);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: all 0.2s ease;
+  }
+
+  input:focus + label,
+  &.has-value label {
+    top: -0.45rem; // 🔼 sobe mais alto, saindo da área de digitação
+    left: 0.6rem;
+    font-size: 0.75rem;
+    color: $primary-blue;
+    background: $white; // 🔲 fundo branco para o label
+    padding: 0 0.3rem; // 🔲 cria espaço lateral para o fundo
+    z-index: 1; // 🔲 garante que fique acima do input
+  }
+}
+
+// ======= Botão =======
+button {
+  background: $secondary-blue;
+  color: $white;
+  border: none;
+  padding: 0.9rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.1s;
+
+  &:hover {
+    background: color.adjust($secondary-blue, $lightness: -10%);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  &:disabled {
+    background: color.adjust($primary-blue, $lightness: 25%);
+    cursor: not-allowed;
+  }
+}
