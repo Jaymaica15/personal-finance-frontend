@@ -58,6 +58,8 @@ export class TransactionDialog {
     });
   }
 
+  dataForm = new FormControl<Date | null>(null);
+
   submit(): void {
 
     if (this.form.invalid) {

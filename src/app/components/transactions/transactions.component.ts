@@ -1,9 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Transaction } from '../../models/transaction.model';
 import { MatCardModule } from "@angular/material/card";
 import { MatListModule } from "@angular/material/list";
-import { MatTableModule } from "@angular/material/table";
+import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { TransactionDialog } from '../../transaction-dialog/transaction-dialog';
 import { TransactionService } from './transactions.service';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { After } from 'v8';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-transactions',
@@ -23,62 +26,51 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
     MatCardModule, // ✅ habilita <mat-card>
     MatListModule,
     MatIconModule,
+    MatPaginatorModule,
     MatSortModule, // ✅ habilita ordenação
-    MatTableModule,// ✅ habilita <mat-table>
+    MatTableModule, // ✅ habilita <mat-table>
     MatProgressBarModule // ✅ habilita <mat-progress-bar>
   ]
 })
 
-export class TransactionsComponent implements OnInit {
-  displayedColumns: string[] = ['id', 'category', 'description', 'date', 'type', 'amount', 'actions', ];
+export class TransactionsComponent implements OnInit{
+
+  private _liveAnnouncer = inject(LiveAnnouncer);
+
+  displayedColumns: string[] = ['id', 'category', 'description', 'date', 'type', 'amount', 'actions'];
+  dataSource = new MatTableDataSource<Transaction>();
   transactions: Transaction[] = [];
-  sortedData: Transaction[];
   loading: boolean = true;
   error: string = '';
 
-  constructor(private apiService: ApiService, private http: HttpClient, private dialog: MatDialog, private transactionService: TransactionService) {
-    this.sortedData = this.transactions.slice();
-  }
+  constructor(private apiService: ApiService, private http: HttpClient, private dialog: MatDialog, private transactionService: TransactionService) {}
 
   @ViewChild(MatSort) sort!: MatSort;
-
-  sortData(sort: Transaction) {
-    const data = this.transactions.slice();
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'id':
-          return compare(a.id, b.id, isAsc);
-        case 'date':
-          return compare(a.date, b.date, isAsc);
-        case 'amount':
-          return compare(a.amount, b.amount, isAsc);
-        default:
-          return 0;
-      }
-    });
-  }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
     this.http.get<Transaction[]>('http://localhost:8080/api/transactions')
       .subscribe({
-        next: res => this.transactions = res,
+        next: res => {
+          this.transactions = res;
+          this.atualizarTabela(res)
+        },
         error: err => console.error('Erro ao carregar transações', err),
-        complete: () => {
-          this.loading = false;
-        }
+        complete: () => this.loading = false
     });
+  }
+
+  atualizarTabela(transactions: Transaction[]) {
+    this.dataSource.data = transactions;
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   openDialog() {
     this.dialog.open(TransactionDialog).afterClosed().subscribe((newTransaction) => {
       if (newTransaction) {
         this.transactions.push(newTransaction);
+        this.dataSource.data = this.transactions;
       }
     });
   }
@@ -96,6 +88,7 @@ export class TransactionsComponent implements OnInit {
           this.transactions[index] = editedTransaction;
         }
         this.ngOnInit(); // atualiza a lista
+        this.dataSource.data = this.transactions;
       }
     });
   }
@@ -111,9 +104,16 @@ export class TransactionsComponent implements OnInit {
       }
     });
   }
-}
-
-function compare(a: number | string | Date | undefined, b: number | string | Date | undefined, isAsc: boolean) {
-  if (a === undefined || b === undefined) return 0;
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  
+  announceSortChange(sortState: Sort) {
+    // This example uses English messages. If your application supports
+    // multiple language, you would internationalize these strings.
+    // Furthermore, you can customize the message to add additional
+    // details about the values being sorted.
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    } else {
+      this._liveAnnouncer.announce('Sorting cleared');
+    }
+  }
 }
