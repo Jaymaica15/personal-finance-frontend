@@ -13,7 +13,6 @@ import { TransactionService } from './transactions.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { After } from 'v8';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 
 @Component({
@@ -53,14 +52,14 @@ export class TransactionsComponent implements OnInit{
       .subscribe({
         next: res => {
           this.transactions = res;
-          this.atualizarTabela(res)
+          this.updateTable(res)
         },
         error: err => console.error('Erro ao carregar transações', err),
         complete: () => this.loading = false
     });
   }
 
-  atualizarTabela(transactions: Transaction[]) {
+  updateTable(transactions: Transaction[]) {
     this.dataSource.data = transactions;
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
