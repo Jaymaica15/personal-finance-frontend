@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, inject, OnInit, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { Transaction } from '../../models/transaction.model';
 import { MatCardModule } from "@angular/material/card";
